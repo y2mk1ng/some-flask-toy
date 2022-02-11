@@ -17,15 +17,3 @@ def celerymake(flask_app):
             broker = '127.0.0.1:5000',
             )
     c.conf.update(create_app.config)
-
-    class task(c.Task):
-        def __call__(self, *args, **kwargs):
-            with create_app.app_context():
-                return self.run(*args, **kwargs)
-    return task
-
-celery = celerymake(create_app)
-
-@celery.task()
-def send_name():
-    return flask_app.render_it
